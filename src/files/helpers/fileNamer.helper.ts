@@ -1,14 +1,14 @@
-export const fileFilter = (
+import { v4 as uuid } from 'uuid';
+
+export const fileNamer = (
   req: Express.Request,
   file: Express.Multer.File,
-  callback: (error: Error | null, acceptFile: boolean) => void,
+  callback: (error: Error | null, fileName: string) => void,
 ) => {
-  if (!file) return callback(new Error('File is empty'), false);
+  if (!file) return callback(new Error('File is empty'), 'false');
 
   const fileExtension: string = file.mimetype.split('/')[1];
-  const validExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+  const fileName = `${uuid()}.${fileExtension}`;
 
-  if (validExtensions.includes(fileExtension)) return callback(null, true);
-
-  callback(null, false);
+  callback(null, fileName);
 };
